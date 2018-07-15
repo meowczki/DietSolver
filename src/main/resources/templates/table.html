@@ -1,0 +1,32 @@
+
+
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<table align="center">
+
+	<tr>
+		<th>Name</th>
+		<th>Kcals</th>
+		<th>Carbs</th>
+		<th>Prot</th>
+		<th>Weight</th>
+
+	</tr>
+	<tr th:each="s : ${solutions}">
+		<td th:text="${s.name}"></td>
+		<td th:text="${s.kcals}"></td>
+		<td th:text="${s.carb}"></td>
+
+		<td th:text="${s.prot}"></td>
+		<td th:text="${s.weight}"></td>
+
+	</tr>
+</table>
+</body>
+</html>

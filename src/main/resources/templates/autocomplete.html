@@ -1,0 +1,112 @@
+
+<!DOCTYPE HTML>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<style>
+input[type=submit] {
+            color:DarkCyan;
+            font-size:30px;
+            padding: 10px 24px;
+            border-radius: 12px;
+            
+    }
+        </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title th:text="${title}"></title>
+
+<!-- JQuery -->
+<script type="text/javascript" th:src="@{/js/jquery-3.2.0.min.js}"></script>
+<!--Import https://www.devbridge.com/sourcery/components/jquery-autocomplete/#-->
+<script type="text/javascript" th:src="@{/js/jquery.autocomplete.js}"></script>
+<!-- Compiled and minified JavaScript -->
+<script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
+
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet"
+	th:href="@{/css/materialize.min.css}" media="screen,projection" />
+<!--Import Google Icon Font-->
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+
+
+
+
+
+<script>
+	$(document).ready(
+			function() {
+				
+				   
+
+				console.log("ready");
+
+				$('#autocomplete-input').devbridgeAutocomplete(
+						{
+							serviceUrl : '/suggestion',
+							paramName : "searchstr",
+							transformResult : function(response) {
+
+								return {
+									suggestions : $.map($.parseJSON(response),
+											function(item) {
+
+												return {
+													value : item.name,
+													data : item.id
+												};
+											})
+
+								};
+
+							},
+							onSelect : function(suggestion) {
+								  	var name = suggestion.value;
+								    var id = suggestion.data;
+									data=id
+								    jQuery.ajax ({
+								    url: "/addItem/"+suggestion.data,
+								    type: "POST",
+								    data: {},								   
+								    dataType: "json",
+								    contentType: "application/json; charset=utf-8",
+								    success: function(){
+								        //
+								    }
+								});
+
+								$("#div1").after(
+										"<p id="+suggestion.data+" align='center'>" + suggestion.value + "</p>");
+								$(this).val('');
+								return false; 
+
+								
+							}
+
+						});
+
+			});
+</script>
+</head>
+<form action="solveDiet">
+  <input type="submit" value="Generuj">
+</form>
+<body>
+	<input name="foodValue" id="foodId" />
+	<div id="div1" class="row">
+		<div class="col s12">
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons prefix">textsms</i> <input type="text"
+						id="autocomplete-input" class="autocomplete"> <label
+						for="autocomplete-input">Search Food</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+</html>
